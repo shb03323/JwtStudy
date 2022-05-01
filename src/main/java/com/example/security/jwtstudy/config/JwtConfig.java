@@ -1,6 +1,7 @@
 package com.example.security.jwtstudy.config;
 
 
+import com.example.security.jwtstudy.provider.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,4 +1,4 @@
-package com.example.security.jwtstudy.config;
+package com.example.security.jwtstudy.provider;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-// 토큰 생성, 검
+// 토큰 생성, 검증
 public class TokenProvider {
     protected final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
@@ -54,7 +54,7 @@ public class TokenProvider {
                 .compact();
     }
 
-    // 토큰을 받아 클레임을 만들고 권한정보를 빼서 시큐리티 유저객체를 만들어 Authentication 객체 반환
+    // 토큰을 받아 클레임을 만들고 권한정보를 빼서 Security 유저객체를 만들어 Authentication 객체 반환
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()
