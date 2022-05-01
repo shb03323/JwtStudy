@@ -6,6 +6,7 @@ import com.example.security.jwtstudy.exception.DuplicateMemberException;
 import com.example.security.jwtstudy.service.dto.RequestUserRegisterDTO;
 import com.example.security.jwtstudy.service.dto.ResponseUserRegisterDTO;
 import com.example.security.jwtstudy.service.repository.AccountRepository;
+import com.example.security.jwtstudy.utils.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,17 @@ public class UserService {
 
         // DB에 저장하고 그걸 DTO로 변환해서 반환, 예제라서 비번까지 다 보낸다. 원랜 당연히 보내면 안댐
         return ResponseUserRegisterDTO.of(accountRepository.save(user));
+    }
+
+    // username을 파라미터로 받아 해당 유저의 정보를 가져온다
+    @Transactional(readOnly = true)
+    public ResponseUserRegisterDTO getUserWithAuthorities(String username) {
+        return ResponseUserRegisterDTO.of(accountRepository.findOneWithAuthoritiesByUsername(username).orElseGet(()->null));
+    }
+
+    // 현재 시큐리티 컨텍스트에 저장된 username에 해당하는 정보를 가져온다.
+    @Transactional(readOnly = true)
+    public ResponseUserRegisterDTO getMyUserWithAuthorities() {
+        return ResponseUserRegisterDTO.of(SecurityUtil.getCurrentUsername().flatMap(accountRepository::findOneWithAuthoritiesByUsername).orElseGet(()->null));
     }
 }
