@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.lang.String;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +32,9 @@ public class TokenProvider {
 
     protected Key key;
 
-    public TokenProvider(String secret, long tokenValidityInSeconds) {
+    public TokenProvider(
+            @Value("${spring.jwt.secret}") String secret,
+            @Value("${spring.jwt.access-token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
 
